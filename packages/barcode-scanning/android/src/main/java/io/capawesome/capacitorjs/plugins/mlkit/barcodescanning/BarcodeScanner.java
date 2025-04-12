@@ -11,7 +11,9 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
+import android.util.Size;
 import android.view.Display;
 import android.view.WindowManager;
 import androidx.annotation.NonNull;
@@ -25,6 +27,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
+import com.getcapacitor.Logger;
 import com.getcapacitor.PermissionState;
 import com.getcapacitor.PluginCall;
 import com.google.android.gms.common.moduleinstall.InstallStatusListener;
@@ -96,7 +99,16 @@ public class BarcodeScanner implements ImageAnalysis.Analyzer {
         BarcodeScannerOptions options = buildBarcodeScannerOptions(scanSettings);
         barcodeScannerInstance = BarcodeScanning.getClient(options);
 
-        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder().setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build();
+        ImageAnalysis.Builder builder = new ImageAnalysis.Builder()
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST);
+
+        // Workaround for Samsung A23 5G
+        if (Build.MODEL.equalsIgnoreCase("Samsung A23 5G") || Build.MODEL.equalsIgnoreCase("SM-A236M")) {
+            Logger.info("BarcodeScanner", "Device is Samsung A23 5G - Setting resolution to 640x480");
+            builder.setTargetResolution(new Size(640, 480));
+        }
+
+        ImageAnalysis imageAnalysis = builder.build();
         imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(plugin.getContext()), this);
 
         ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(plugin.getContext());
