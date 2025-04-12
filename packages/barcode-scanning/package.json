@@ -1,5 +1,5 @@
 {
-  "name": "@capacitor-mlkit/barcode-scanning",
+  "name": "@matiasfic/barcode-scanning",
   "version": "6.2.0",
   "description": "Capacitor plugin for ML Kit Barcode Scanning.",
   "main": "dist/plugin.cjs.js",
@@ -18,10 +18,10 @@
   "homepage": "https://capawesome.io/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/capawesome-team/capacitor-mlkit.git"
+    "url": "git+https://github.com/matiasfic/capacitor-mlkit.git"
   },
   "bugs": {
-    "url": "https://github.com/capawesome-team/capacitor-mlkit/issues"
+    "url": "https://github.com/matiasfic/capacitor-mlkit/issues"
   },
   "funding": [
     {
